@@ -2,12 +2,12 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8">
-<title>Plan2Graph · 平面识别与关系编辑</title>
+<title>Designing Relationships · 平面识别与关系编辑</title>
 <style>/*@@CSS@@*/</style>
 </head>
 <body>
 <div id="left">
-  <header class="app-title"><h1>Plan 标注器 <small>v0.5.8</small></h1><button id="language" type="button" lang="en" aria-label="Switch to English">English</button></header>
+  <header class="app-title"><h1>Designing Relationships <small>v0.5.9</small></h1><button id="language" type="button" lang="en" aria-label="Switch to English">English</button></header>
   <div class="tabs"><button id="tab1" class="on">① 标注平面</button><button id="tab2">② 改关系 → 生成</button></div>
 
   <div id="annLeft">
@@ -48,7 +48,7 @@
   <label><input type="checkbox" id="sbg" checked> 显示底图</label>
 
   <h2>导出</h2>
-  <button id="exp">导出 plan2graph JSON</button>
+  <button id="exp">导出空间关系 JSON</button>
   <button id="save">保存工程（含图片）</button>
   </div>
 
@@ -133,7 +133,7 @@
 </div>
 
 <div id="modal" class="modal" hidden><div class="box">
-  <div style="margin-bottom:8px">plan2graph JSON（如未自动下载，可复制保存为 <code>my_plan.json</code>，再运行 <code>python -m plan2graph analyze my_plan.json</code>）</div>
+  <div style="margin-bottom:8px">你也可以复制下方 JSON 并保存为 .json 文件。</div>
   <textarea id="mt" readonly style="height:52vh"></textarea>
   <div class="row" style="margin-top:8px"><button id="copy">复制</button><button id="close">关闭</button></div>
 </div></div>

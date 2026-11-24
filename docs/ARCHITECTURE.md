@@ -30,8 +30,8 @@ web/
       design-brief.js       BRIEF parses two bilingual intents and compares sites and generated layouts
       use-check.js          USE = {check, attach, selectWithUse, …}: beds, door swings, wardrobes, routes, area guard
     data/eichler.js
-  build.py                src → dist/plan2graph.html
-  dist/plan2graph.html    the app (open it, or deploy it with GitHub Pages)
+  build.py                src → dist/index.html
+  dist/index.html         the app (open it, or deploy it with GitHub Pages)
   tests/                  run_tests.py, cases.js, fixtures/, golden/, smoke test
 ```
 

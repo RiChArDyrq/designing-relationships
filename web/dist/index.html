@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8">
-<title>Plan2Graph · 平面识别与关系编辑</title>
+<title>Designing Relationships · 平面识别与关系编辑</title>
 <style>
 *{box-sizing:border-box}
 #briefBox{margin:12px 0;border-bottom:1px solid #d9d9df;padding-bottom:10px}
@@ -106,7 +106,7 @@ html[lang=en] .prm input[type=range]{min-width:20px}
 </head>
 <body>
 <div id="left">
-  <header class="app-title"><h1>Plan 标注器 <small>v0.5.8</small></h1><button id="language" type="button" lang="en" aria-label="Switch to English">English</button></header>
+  <header class="app-title"><h1>Designing Relationships <small>v0.5.9</small></h1><button id="language" type="button" lang="en" aria-label="Switch to English">English</button></header>
   <div class="tabs"><button id="tab1" class="on">① 标注平面</button><button id="tab2">② 改关系 → 生成</button></div>
 
   <div id="annLeft">
@@ -147,7 +147,7 @@ html[lang=en] .prm input[type=range]{min-width:20px}
   <label><input type="checkbox" id="sbg" checked> 显示底图</label>
 
   <h2>导出</h2>
-  <button id="exp">导出 plan2graph JSON</button>
+  <button id="exp">导出空间关系 JSON</button>
   <button id="save">保存工程（含图片）</button>
   </div>
 
@@ -232,7 +232,7 @@ html[lang=en] .prm input[type=range]{min-width:20px}
 </div>
 
 <div id="modal" class="modal" hidden><div class="box">
-  <div style="margin-bottom:8px">plan2graph JSON（如未自动下载，可复制保存为 <code>my_plan.json</code>，再运行 <code>python -m plan2graph analyze my_plan.json</code>）</div>
+  <div style="margin-bottom:8px">你也可以复制下方 JSON 并保存为 .json 文件。</div>
   <textarea id="mt" readonly style="height:52vh"></textarea>
   <div class="row" style="margin-top:8px"><button id="copy">复制</button><button id="close">关闭</button></div>
 </div></div>
@@ -260,8 +260,7 @@ const englishCopy = new Map(`
 床侧预留 0.60 m，门口留出 0.60 m。|Allows 0.60 m along one bed side and keeps the bed clear of a 0.60 m doorway approach.
 设置比例尺可测试实际床位。|Calibrate the scale to test a physical bed footprint.
 锁定轮廓中未找到参考床位。|No reference bed fits the locked outline in this search.
-Plan 标注器|Plan Annotator
-Plan2Graph · 平面识别与关系编辑|Plan2Graph · Plan recognition and graph editing
+Designing Relationships · 平面识别与关系编辑|Designing Relationships · Plan recognition and graph editing
 ① 标注平面|① Annotate plan
 ② 改关系 → 生成|② Edit graph & generate
 ⬆ 上传平面图 / 工程文件|⬆ Open plan image / project
@@ -293,7 +292,7 @@ px · 约为墙厚的一半多一点|px · just over half the wall thickness
 在平面上显示关系图 (G)|Overlay graph on plan (G)
 显示底图|Show plan image
 导出|Export
-导出 plan2graph JSON|Export plan2graph JSON
+导出空间关系 JSON|Export spatial graph JSON
 保存工程（含图片）|Save project with image
 • 依次点两个节点 →|• Click two nodes in order to
 连接 / 断开|connect / disconnect them
@@ -333,9 +332,7 @@ px · 约为墙厚的一半多一点|px · just over half the wall thickness
 选中内容|Selection
 改动摘要|Changes
 空间 · 目标面积 · 锁定|Rooms · target area · lock
-plan2graph JSON（如未自动下载，可复制保存为|If the download did not start, copy the plan2graph JSON, save it as
-，再运行|, then run
-）|. 
+你也可以复制下方 JSON 并保存为 .json 文件。|You can also copy the JSON below and save it as a .json file.
 复制|Copy
 关闭|Close
 ✨ 导入 AI 识别结果|✨ Import AI annotations
@@ -506,8 +503,16 @@ function translateMessage(source) {
   return source;
 }
 
+const languagePreferenceKey = 'designing-relationships.language';
 let uiLanguage = 'zh';
-try { if (localStorage.getItem('plan2graph.language') === 'en') uiLanguage = 'en'; } catch {}
+try {
+  let preference = localStorage.getItem(languagePreferenceKey);
+  if (preference === null) {
+    preference = localStorage.getItem('plan2graph.language');
+    if (preference === 'zh' || preference === 'en') localStorage.setItem(languagePreferenceKey, preference);
+  }
+  if (preference === 'en') uiLanguage = 'en';
+} catch {}
 const ui = source => uiLanguage === 'en' ? translateMessage(source) : source;
 const englishPrompt = `Read only the uploaded floor plan. Match numbered spaces to the legend and follow leader lines to their endpoints. Identify rooms by their printed labels. Return only valid JSON in this format:
 {"image_size":[width,height],"rooms":[{"name":"label on drawing","type":"bedroom","polygon":[[x,y],[x,y],[x,y]]}],"connections":[{"kind":"door","a":[x,y],"b":[x,y]}]}
@@ -546,7 +551,7 @@ function installLanguageSwitch() {
 
   function refresh() {
     document.documentElement.lang = uiLanguage === 'en' ? 'en' : 'zh-CN';
-    document.title = ui('Plan2Graph · 平面识别与关系编辑');
+    document.title = ui('Designing Relationships · 平面识别与关系编辑');
     button.textContent = uiLanguage === 'en' ? '中文' : 'English';
     button.lang = uiLanguage === 'en' ? 'zh-CN' : 'en';
     button.setAttribute('aria-label', uiLanguage === 'en' ? '切换为中文' : 'Switch to English');
@@ -567,7 +572,7 @@ function installLanguageSwitch() {
   updates.observe(document.body, {childList:true, subtree:true});
   button.addEventListener('click', event => {
     uiLanguage = uiLanguage === 'zh' ? 'en' : 'zh';
-    try { localStorage.setItem('plan2graph.language', uiLanguage); } catch {}
+    try { localStorage.setItem(languagePreferenceKey, uiLanguage); } catch {}
     refresh();
     if (event.detail && TAB === 1 && (draft.length || doorA || scaleA) &&
         document.querySelectorAll('.modal:not([hidden])').length === 0) {
@@ -3403,7 +3408,7 @@ $('#file').addEventListener('change',e=>{
 function download(name,text){try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();a.remove()}catch(err){}}
 function planJSON(rooms,doors,name){const s=S.scale||.01,H=S.h,tf=p=>[+(p[0]*s).toFixed(3),+((H-p[1])*s).toFixed(3)];
  const tot={},n={},cd={};rooms.forEach(r=>tot[r.type]=(tot[r.type]||0)+1);rooms.forEach(r=>{n[r.type]=(n[r.type]||0)+1;cd[r.id]=TY[r.type].code+(tot[r.type]>1?n[r.type]:'')});
- return{name,unit:'m',source:'plan-annotator v0.5.8',
+ return{name,unit:'m',source:'Designing Relationships v0.5.9',
   meta:{scale_m_per_px:S.scale,scale_assumed:!S.scale,suggested_tol_m:+(tol*s).toFixed(3),image_size_px:[S.w,S.h]},
   rooms:rooms.map(r=>({id:r.id,code:cd[r.id],name:r.name,type:r.type==='balcony'?'terrace':r.type,outdoor:OUTDOOR.has(r.type),polygon:r.pts.map(tf)})),
   connections:doors.map(d=>({id:d.id,kind:d.kind,geometry:[tf(d.a),tf(d.b)]}))}}

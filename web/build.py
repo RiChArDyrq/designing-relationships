@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Assemble web/src/* into the single-file app web/dist/plan2graph.html.
+"""Assemble web/src/* into the single-file app web/dist/index.html.
 
     python web/build.py           # build
     python web/build.py --check   # fail if dist/ is out of date (used by CI)

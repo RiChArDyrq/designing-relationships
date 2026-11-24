@@ -45,7 +45,7 @@ $('#file').addEventListener('change',e=>{
 function download(name,text){try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();a.remove()}catch(err){}}
 function planJSON(rooms,doors,name){const s=S.scale||.01,H=S.h,tf=p=>[+(p[0]*s).toFixed(3),+((H-p[1])*s).toFixed(3)];
  const tot={},n={},cd={};rooms.forEach(r=>tot[r.type]=(tot[r.type]||0)+1);rooms.forEach(r=>{n[r.type]=(n[r.type]||0)+1;cd[r.id]=TY[r.type].code+(tot[r.type]>1?n[r.type]:'')});
- return{name,unit:'m',source:'plan-annotator v0.5.8',
+ return{name,unit:'m',source:'Designing Relationships v0.5.9',
   meta:{scale_m_per_px:S.scale,scale_assumed:!S.scale,suggested_tol_m:+(tol*s).toFixed(3),image_size_px:[S.w,S.h]},
   rooms:rooms.map(r=>({id:r.id,code:cd[r.id],name:r.name,type:r.type==='balcony'?'terrace':r.type,outdoor:OUTDOOR.has(r.type),polygon:r.pts.map(tf)})),
   connections:doors.map(d=>({id:d.id,kind:d.kind,geometry:[tf(d.a),tf(d.b)]}))}}

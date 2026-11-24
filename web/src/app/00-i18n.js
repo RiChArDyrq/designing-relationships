@@ -12,8 +12,7 @@ const englishCopy = new Map(`
 床侧预留 0.60 m，门口留出 0.60 m。|Allows 0.60 m along one bed side and keeps the bed clear of a 0.60 m doorway approach.
 设置比例尺可测试实际床位。|Calibrate the scale to test a physical bed footprint.
 锁定轮廓中未找到参考床位。|No reference bed fits the locked outline in this search.
-Plan 标注器|Plan Annotator
-Plan2Graph · 平面识别与关系编辑|Plan2Graph · Plan recognition and graph editing
+Designing Relationships · 平面识别与关系编辑|Designing Relationships · Plan recognition and graph editing
 ① 标注平面|① Annotate plan
 ② 改关系 → 生成|② Edit graph & generate
 ⬆ 上传平面图 / 工程文件|⬆ Open plan image / project
@@ -45,7 +44,7 @@ px · 约为墙厚的一半多一点|px · just over half the wall thickness
 在平面上显示关系图 (G)|Overlay graph on plan (G)
 显示底图|Show plan image
 导出|Export
-导出 plan2graph JSON|Export plan2graph JSON
+导出空间关系 JSON|Export spatial graph JSON
 保存工程（含图片）|Save project with image
 • 依次点两个节点 →|• Click two nodes in order to
 连接 / 断开|connect / disconnect them
@@ -85,9 +84,7 @@ px · 约为墙厚的一半多一点|px · just over half the wall thickness
 选中内容|Selection
 改动摘要|Changes
 空间 · 目标面积 · 锁定|Rooms · target area · lock
-plan2graph JSON（如未自动下载，可复制保存为|If the download did not start, copy the plan2graph JSON, save it as
-，再运行|, then run
-）|. 
+你也可以复制下方 JSON 并保存为 .json 文件。|You can also copy the JSON below and save it as a .json file.
 复制|Copy
 关闭|Close
 ✨ 导入 AI 识别结果|✨ Import AI annotations
@@ -258,8 +255,16 @@ function translateMessage(source) {
   return source;
 }
 
+const languagePreferenceKey = 'designing-relationships.language';
 let uiLanguage = 'zh';
-try { if (localStorage.getItem('plan2graph.language') === 'en') uiLanguage = 'en'; } catch {}
+try {
+  let preference = localStorage.getItem(languagePreferenceKey);
+  if (preference === null) {
+    preference = localStorage.getItem('plan2graph.language');
+    if (preference === 'zh' || preference === 'en') localStorage.setItem(languagePreferenceKey, preference);
+  }
+  if (preference === 'en') uiLanguage = 'en';
+} catch {}
 const ui = source => uiLanguage === 'en' ? translateMessage(source) : source;
 const englishPrompt = `Read only the uploaded floor plan. Match numbered spaces to the legend and follow leader lines to their endpoints. Identify rooms by their printed labels. Return only valid JSON in this format:
 {"image_size":[width,height],"rooms":[{"name":"label on drawing","type":"bedroom","polygon":[[x,y],[x,y],[x,y]]}],"connections":[{"kind":"door","a":[x,y],"b":[x,y]}]}
@@ -298,7 +303,7 @@ function installLanguageSwitch() {
 
   function refresh() {
     document.documentElement.lang = uiLanguage === 'en' ? 'en' : 'zh-CN';
-    document.title = ui('Plan2Graph · 平面识别与关系编辑');
+    document.title = ui('Designing Relationships · 平面识别与关系编辑');
     button.textContent = uiLanguage === 'en' ? '中文' : 'English';
     button.lang = uiLanguage === 'en' ? 'zh-CN' : 'en';
     button.setAttribute('aria-label', uiLanguage === 'en' ? '切换为中文' : 'Switch to English');
@@ -319,7 +324,7 @@ function installLanguageSwitch() {
   updates.observe(document.body, {childList:true, subtree:true});
   button.addEventListener('click', event => {
     uiLanguage = uiLanguage === 'zh' ? 'en' : 'zh';
-    try { localStorage.setItem('plan2graph.language', uiLanguage); } catch {}
+    try { localStorage.setItem(languagePreferenceKey, uiLanguage); } catch {}
     refresh();
     if (event.detail && TAB === 1 && (draft.length || doorA || scaleA) &&
         document.querySelectorAll('.modal:not([hidden])').length === 0) {

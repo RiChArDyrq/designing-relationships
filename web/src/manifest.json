@@ -1,5 +1,5 @@
 {
-  "output": "dist/plan2graph.html",
+  "output": "dist/index.html",
   "css": "styles.css",
   "scripts": {
     "app": [

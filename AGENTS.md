@@ -3,7 +3,7 @@
 Read this before changing anything.
 
 ## Where the code lives
-- Edit **`web/src/`** only. `web/dist/plan2graph.html` is generated; never edit it by hand and never create a new version by string-replacing the built HTML.
+- Edit **`web/src/`** only. `web/dist/index.html` is generated; never edit it by hand and never create a new version by string-replacing the built HTML.
 - `web/src/engine/` = pure logic (geometry, plan generator). **No DOM, no `$()`, no `S`, no `document`.** It must stay runnable in the tests without a browser.
 - `web/src/app/` = UI and app state. It may call the engine; the engine never calls the app.
 - `web/src/data/` = case data (e.g. the Eichler preset).

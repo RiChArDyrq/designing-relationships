@@ -8,7 +8,7 @@ jobs:
     environment: { name: github-pages, url: "${{ steps.d.outputs.page_url }}" }
     steps:
       - uses: actions/checkout@v4
-      - run: mkdir -p site && cp web/dist/plan2graph.html site/index.html
+      - run: mkdir -p site && cp web/dist/index.html site/index.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
@@ -24,7 +24,7 @@ jobs:
           for attempt in {1..12}; do
             if curl --fail --silent --show-error --location --max-time 15 \
               "${PAGE_URL%/}/?release=${GITHUB_SHA}" --output "$RUNNER_TEMP/published.html" &&
-              cmp -s web/dist/plan2graph.html "$RUNNER_TEMP/published.html"; then
+              cmp -s web/dist/index.html "$RUNNER_TEMP/published.html"; then
               echo "Verified public prototype at $PAGE_URL"
               exit 0
             fi

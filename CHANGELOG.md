@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.5.9
+- Use the portfolio title **Designing Relationships** in the web app, project documentation and exported graph data.
+
 ## 0.5.8 (design briefs)
 - Add Chinese and English design briefs for quiet bedrooms and a study near its owner's bedroom. Preview reference locations, review the evidence and apply a preference to the editable graph.
 - Layout search now considers activity-room separation and owner proximity when briefs are active. Result reviews use the generated polygons and actual door connections. Reuse an existing study or create one with a proposed, editable direct door.

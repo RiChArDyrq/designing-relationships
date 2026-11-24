@@ -6,7 +6,7 @@
     python web/tests/run_tests.py --update-golden  # accept an intended change in generator output
 
 Engine tests load src/engine/*.js directly (no browser). The smoke test loads the built
-dist/plan2graph.html in a fake DOM and simulates "upload an image".
+dist/index.html in a fake DOM and simulates "upload an image".
 """
 import json, pathlib, re, sys, time
 try:
@@ -57,9 +57,9 @@ def run_golden(ctx, update, fn="lanaiSummary", stem="lanai"):
 
 def run_smoke():
     name = "smoke: page loads and accepts an uploaded image"
-    dist = WEB / "dist/plan2graph.html"
+    dist = WEB / "dist/index.html"
     if not dist.exists():
-        return {"name": name, "ok": False, "err": "dist/plan2graph.html missing - run build.py"}
+        return {"name": name, "ok": False, "err": "dist/index.html missing - run build.py"}
     ctx = quickjs.Context()
     ctx.eval(read(T / "polyfills.js"))
     ctx.eval(read(T / "dom_stub.js"))
