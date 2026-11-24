@@ -6,7 +6,7 @@ those relationships, then check whether the result is still livable (bed fits, b
 > A plan fixes one set of relationships in one geometry. Plan2Graph runs this backwards: read the
 > relationships, make them editable, generate several geometries from them, and check that each one keeps them.
 
-**Try it:** open `web/dist/plan2graph.html` in Chrome/Edge (after enabling GitHub Pages: `https://<you>.github.io/<repo>/`).
+[Try Plan2Graph in your browser](https://richardyrq.github.io/designing-relationships/) or open `web/dist/plan2graph.html` in Chrome or Edge to use it offline.
 
 ## Design briefs (v0.5.8)
 Open an annotated project and switch to **Edit graph & generate**. Enter one brief at a time, analyse it, then apply it before generating layouts. Examples include “Bedroom 2 should be quiet for my elderly parent” and “Add a working space for the owner”. Both preferences can be active at once. The panel asks which bedroom belongs to the owner when the plan is ambiguous.

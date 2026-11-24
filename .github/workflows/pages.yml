@@ -10,6 +10,25 @@ jobs:
       - uses: actions/checkout@v4
       - run: mkdir -p site && cp web/dist/plan2graph.html site/index.html
       - uses: actions/upload-pages-artifact@v3
-        with: { path: site }
+        with:
+          path: site
+          name: github-pages-${{ github.run_attempt }}
       - id: d
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-${{ github.run_attempt }}
+      - name: Verify the published prototype
+        env:
+          PAGE_URL: ${{ steps.d.outputs.page_url }}
+        run: |
+          for attempt in {1..12}; do
+            if curl --fail --silent --show-error --location --max-time 15 \
+              "${PAGE_URL%/}/?release=${GITHUB_SHA}" --output "$RUNNER_TEMP/published.html" &&
+              cmp -s web/dist/plan2graph.html "$RUNNER_TEMP/published.html"; then
+              echo "Verified public prototype at $PAGE_URL"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::Public HTML did not match the release."
+          exit 1
