@@ -1,0 +1,35 @@
+{
+  "output": "dist/plan2graph.html",
+  "css": "styles.css",
+  "scripts": {
+    "app": [
+      "app/00-i18n.js",
+      "app/01-state.js",
+      "app/02-history.js",
+      "engine/geometry.js",
+      "app/04-recognition.js",
+      "app/05-graph-metrics.js",
+      "app/06-render.js",
+      "app/07-interaction.js",
+      "app/08-ai-import.js",
+      "data/eichler.js",
+      "app/10-plan-labels.js",
+      "app/11-label-scan.js",
+      "engine/generator.js",
+      "engine/use-check.js",
+      "engine/design-brief.js",
+      "app/20-graph-editor.js",
+      "app/21-run-generator.js",
+      "app/22-candidates.js",
+      "app/22b-use-check-ui.js",
+      "app/22c-design-brief.js",
+      "app/23-tabs.js",
+      "app/24-load-save.js",
+      "app/25-example.js",
+      "app/26-init.js"
+    ],
+    "eichler-button": [
+      "app/90-eichler-button.js"
+    ]
+  }
+}

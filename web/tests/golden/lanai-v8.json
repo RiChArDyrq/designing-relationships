@@ -1,0 +1,55 @@
+{
+ "pool": 5,
+ "options": [
+  {
+   "label": "A",
+   "satisfied": 14,
+   "total": 16,
+   "missing": [
+    "C|St4",
+    "E|L"
+   ],
+   "areaErr": 0.557
+  },
+  {
+   "label": "B",
+   "satisfied": 14,
+   "total": 16,
+   "missing": [
+    "C|St4",
+    "D|L"
+   ],
+   "areaErr": 0.643
+  },
+  {
+   "label": "C",
+   "satisfied": 14,
+   "total": 16,
+   "missing": [
+    "C|St4",
+    "D|L"
+   ],
+   "areaErr": 0.97
+  },
+  {
+   "label": "D",
+   "satisfied": 14,
+   "total": 16,
+   "missing": [
+    "D|K",
+    "E|L"
+   ],
+   "areaErr": 1.159
+  },
+  {
+   "label": "E",
+   "satisfied": 14,
+   "total": 16,
+   "missing": [
+    "C|St4",
+    "E|L"
+   ],
+   "areaErr": 1.384
+  }
+ ]
+}

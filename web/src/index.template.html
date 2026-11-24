@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Plan2Graph · 平面识别与关系编辑</title>
+<style>/*@@CSS@@*/</style>
+</head>
+<body>
+<div id="left">
+  <header class="app-title"><h1>Plan 标注器 <small>v0.5.8</small></h1><button id="language" type="button" lang="en" aria-label="Switch to English">English</button></header>
+  <div class="tabs"><button id="tab1" class="on">① 标注平面</button><button id="tab2">② 改关系 → 生成</button></div>
+
+  <div id="annLeft">
+  <label class="btn">⬆ 上传平面图 / 工程文件<input type="file" id="file" accept="image/*,.json" hidden></label>
+  <button id="ex1">加载示例平面（空白）</button>
+  <button id="ex2">加载示例平面（已标注）</button>
+
+  <button id="eich">打开 Eichler 住宅示例</button>
+  <h2>当前图纸识别</h2>
+  <button class="ai" id="scan" disabled>识别当前平面</button>
+  <div id="scanReview" hidden><div id="scanStatus" role="status"></div><div id="scanNames"></div><button id="scanApply" hidden></button><button id="scanDismiss">关闭识别预览</button></div>
+  <button class="ai" id="aiimp">✨ 导入 AI 识别结果（JSON）</button>
+  <button id="snapb">⌖ 选中房间吸附到墙线</button>
+  <button id="snapall">⌖ 全部房间吸附到墙线</button>
+  <div class="small" style="margin:6px 0 2px">魔棒参数（工具 W）</div>
+  <div class="prm">墙线阈值<input type="range" id="thr" min="40" max="220" value="130"><span class="v" id="thrv">130</span></div>
+  <div class="prm">门洞封闭<input type="range" id="gap" min="0" max="25" value="6"><span class="v" id="gapv">6</span></div>
+  <label class="small"><input type="checkbox" id="thin" checked> 忽略细线（家具、铺装）</label>
+  <label class="small" style="display:block"><input type="checkbox" id="showmask"> 显示墙线识别结果</label>
+
+  <h2>工具</h2>
+  <div id="modes"></div>
+  <div class="row2"><button id="bundo" title="Ctrl/⌘ + Z">↶ 撤销</button><button id="bredo" title="Ctrl/⌘ + Shift + Z">↷ 重做</button></div>
+
+  <h2>空间类型 <span class="small">（数字键切换）</span></h2>
+  <div id="types"></div>
+
+  <h2>比例尺</h2>
+  <div>线段实际长度 <input id="slen" type="number" value="1" step="0.1" min="0.01"> m</div>
+  <div id="sinfo" class="small">未设置：导出时按 1 px = 0.01 m</div>
+
+  <h2>门洞匹配容差</h2>
+  <input type="range" id="tol" min="3" max="60" value="15" style="width:100%">
+  <div class="small"><span id="tolv">15</span> px · 约为墙厚的一半多一点</div>
+
+  <h2>显示</h2>
+  <label><input type="checkbox" id="sg" checked> 在平面上显示关系图 (G)</label><br>
+  <label><input type="checkbox" id="sbg" checked> 显示底图</label>
+
+  <h2>导出</h2>
+  <button id="exp">导出 plan2graph JSON</button>
+  <button id="save">保存工程（含图片）</button>
+  </div>
+
+  <div id="genLeft" hidden>
+  <section id="briefBox" data-project-text>
+    <label id="briefLabel" for="briefText">空间设计需求</label>
+    <textarea id="briefText" rows="3" maxlength="600" placeholder="例如：卧室2需要最安静的位置"></textarea>
+    <div class="brief-actions"><button type="button" id="briefAnalyze">分析需求</button><button type="button" id="briefApply" hidden>用于生成</button></div>
+    <div id="briefPreview" aria-live="polite"></div>
+    <div id="briefActive"></div>
+  </section>
+  <div class="small" style="line-height:1.7;margin-top:8px">
+   • 依次点两个节点 → <b>连接 / 断开</b><br>
+   • 点连线 → 选中，改门/开口或删除<br>
+   • <span style="color:#c0181f">红色虚线</span> = 删掉的原有连接，点一下恢复<br>
+   • <span style="color:#1a9850">绿色</span> = 新增的必需直连<br>
+   • 拖动节点 = 告诉生成器它大致在哪<br>
+   • 🔒 锁定的空间保持原形状不动
+  </div>
+  <h2>添加空间</h2>
+  <select id="gnewType" style="width:100%"></select>
+  <button id="gadd">＋ 添加新空间</button>
+  <h2>编辑</h2>
+  <div class="row2"><button id="gundo" title="Ctrl/⌘ + Z">↶ 撤销</button><button id="greset">↺ 重置</button></div>
+  <h2>生成</h2>
+  <div class="prm">方案数 <select id="gn"><option>2</option><option selected>4</option><option>6</option></select></div>
+  <div class="prm">搜索强度 <select id="git"><option value="600">快速</option><option value="1500" selected>普通</option><option value="4000">精细</option></select></div>
+  <div id="useSet" style="margin:8px 0 6px;padding:6px 8px;border:1px solid #e3e3e3;border-radius:6px">
+  <div class="small" style="font-weight:600;margin-bottom:3px">使用检查（卧室）</div>
+  <div class="prm"><span>主卧床宽</span> <select id="useMaster"><option value="1.8" selected>1.8 m</option><option value="1.5">1.5 m</option></select></div>
+  <label class="small" style="display:block"><input type="checkbox" id="useBoth" checked> <span>主卧两侧都能上床</span></label>
+  <label class="small" style="display:block"><input type="checkbox" id="useWard" checked> <span>主卧需要衣柜位（0.6 × 1.2 m）</span></label>
+  <label class="small" style="display:block"><input type="checkbox" id="usePrefer" checked> <span>优先给出使用检查合格的方案</span></label>
+  <div class="small" style="color:#888">尺寸为原型默认值，不是规范值。</div>
+  </div>
+  <button class="ai" id="ggo">▶ 生成平面方案</button>
+  <div class="small">已校准时，主卧按 1.50 × 2.00 m 双人床核验。</div><div id="gprog" class="small" role="status"></div><div id="gprep" class="small"></div>
+  <div class="small" style="margin-top:12px;line-height:1.6;color:#999">新增或改类型的连接必须有足够长的共墙和实际门洞。保留锁定空间，重新分隔其余房间，排除阶梯墙和内角 ≤ 60° 的方案。</div>
+  </div>
+</div>
+
+<div id="main">
+  <svg id="cv" tabindex="-1">
+    <g id="world"><image id="bg"/><image id="maskimg" opacity=".55" style="display:none"/><g id="scanLayer" pointer-events="none"></g><g id="lr"></g><g id="ld"></g><g id="lg"></g><g id="luse" pointer-events="none"></g><g id="lt"></g></g>
+  </svg>
+  <div id="hint"></div>
+  <div id="bar" hidden><button id="bdel">🗑 删除</button><button id="btog">⇄ 改为开口</button><button id="bsnap">⌖ 吸附墙线</button><button id="bx" title="取消选择 (Esc)">✕</button></div>
+  <div id="empty">上传一张平面图开始，或在左侧加载示例<br><span style="font-size:12px">上传后自动读取本图的空间名称和候选轮廓</span></div>
+  <div id="genview" hidden>
+    <div id="gedit"><div class="ghead"><b>关系图编辑</b><span id="ghint" class="small"></span></div>
+      <svg id="gsvg"><g id="gw"><image id="gbg" opacity=".13"/><g id="gbriefSite" pointer-events="none"></g><g id="gdyn"></g></g></svg></div>
+    <div id="gres"><div class="ghead"><b>生成结果</b><label class="small"><input type="checkbox" id="gov" checked> 叠加关系图</label><label id="bedtoggle" class="small" hidden><input type="checkbox" id="showbeds" checked> 床位与通道</label><span id="gstat" class="small"></span></div>
+      <div id="gprevwrap"><svg id="gprev"></svg><div id="gempty" role="status">在左侧编辑关系图，然后点「▶ 生成平面方案」</div></div>
+      <div id="greport" hidden></div>
+      <div id="gthumbs" hidden></div></div>
+  </div>
+  <div id="toast" hidden></div>
+</div>
+
+<div id="right">
+  <div id="annRight">
+  <h2 style="margin-top:2px">层级图 · 以室外为根</h2>
+  <div id="sum"></div>
+  <svg id="jg"></svg>
+  <div id="warn"></div>
+  <h2>卧室使用检查</h2>
+  <label class="small"><input type="checkbox" id="useShow"> <span>在平面上显示床位、门扇和动线</span></label>
+  <div id="useRep"></div>
+  <h2>空间列表</h2>
+  <div id="list"></div>
+  <h2>门与开口</h2>
+  <div id="dlist"></div>
+  </div>
+  <div id="genRight" hidden>
+  <h2 style="margin-top:2px">选中内容</h2>
+  <div id="gsel"></div>
+  <h2>改动摘要</h2>
+  <div id="gsum"></div>
+  <h2>空间 · 目标面积 · 锁定</h2>
+  <div id="glist"></div>
+  </div>
+</div>
+
+<div id="modal" class="modal" hidden><div class="box">
+  <div style="margin-bottom:8px">plan2graph JSON（如未自动下载，可复制保存为 <code>my_plan.json</code>，再运行 <code>python -m plan2graph analyze my_plan.json</code>）</div>
+  <textarea id="mt" readonly style="height:52vh"></textarea>
+  <div class="row" style="margin-top:8px"><button id="copy">复制</button><button id="close">关闭</button></div>
+</div></div>
+
+<div id="aimodal" class="modal" hidden><div class="box">
+  <h3>✨ 导入 AI 识别结果</h3>
+  <div class="small" style="margin-bottom:6px">① 复制下面的提示词，连同平面图一起发给支持看图的大模型（Amplify、ChatGPT、Claude 等）。② 把它返回的 JSON 粘贴到下方，点「生成色块」。生成的色块都可以编辑，建议再点一次「全部房间吸附到墙线」。</div>
+  <textarea id="aiprompt" readonly style="height:150px"></textarea>
+  <div class="row" style="margin:6px 0 12px"><button id="copyprompt">复制提示词</button></div>
+  <textarea id="aijson" style="height:200px" placeholder='{"image_size":[883,983],"rooms":[{"name":"Bedroom 1","type":"bedroom","polygon":[[70,218],[295,218],[295,367],[70,367]]}],"connections":[{"kind":"door","a":[256,367],"b":[290,367]}]}'></textarea>
+  <div class="row" style="margin-top:8px"><button id="aigo">生成色块</button><label class="small" style="align-self:center"><input type="checkbox" id="aireplace" checked> 替换现有标注</label><button id="aiclose">关闭</button></div>
+</div></div>
+
+<script>/*@@SCRIPT:app@@*/</script>
+<script>/*@@SCRIPT:eichler-button@@*/</script>
+</body>
+</html>

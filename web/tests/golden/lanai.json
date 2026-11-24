@@ -1,0 +1,63 @@
+{
+ "pool": 8,
+ "options": [
+  {
+   "label": "A",
+   "satisfied": 15,
+   "total": 16,
+   "missing": [
+    "D|K"
+   ],
+   "areaErr": 0.646
+  },
+  {
+   "label": "B",
+   "satisfied": 14,
+   "total": 16,
+   "missing": [
+    "C|St4",
+    "D|L"
+   ],
+   "areaErr": 0.643
+  },
+  {
+   "label": "C",
+   "satisfied": 14,
+   "total": 16,
+   "missing": [
+    "C|O",
+    "E|L"
+   ],
+   "areaErr": 0.906
+  },
+  {
+   "label": "D",
+   "satisfied": 14,
+   "total": 16,
+   "missing": [
+    "D|K",
+    "D|L"
+   ],
+   "areaErr": 0.841
+  },
+  {
+   "label": "E",
+   "satisfied": 14,
+   "total": 16,
+   "missing": [
+    "C|St4",
+    "E|L"
+   ],
+   "areaErr": 1.184
+  },
+  {
+   "label": "F",
+   "satisfied": 15,
+   "total": 16,
+   "missing": [
+    "C|O"
+   ],
+   "areaErr": 1.174
+  }
+ ]
+}

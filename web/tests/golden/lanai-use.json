@@ -1,0 +1,183 @@
+{
+ "stats": {
+  "checked": 8,
+  "pass": 1,
+  "areaOnly": 2
+ },
+ "options": [
+  {
+   "label": "A",
+   "ok": true,
+   "bedrooms": [
+    {
+     "name": "Bedroom",
+     "role": "secondary",
+     "ok": true,
+     "bed": 1.2,
+     "access": "both",
+     "wardrobe": true,
+     "issues": [],
+     "ratio": 1.4
+    },
+    {
+     "name": "Master Bedroom",
+     "role": "master",
+     "ok": true,
+     "bed": 1.8,
+     "access": "both",
+     "wardrobe": true,
+     "issues": [],
+     "ratio": 1.48
+    }
+   ]
+  },
+  {
+   "label": "B",
+   "ok": false,
+   "bedrooms": [
+    {
+     "name": "Bedroom",
+     "role": "secondary",
+     "ok": true,
+     "bed": 0.9,
+     "access": "both",
+     "wardrobe": true,
+     "issues": [
+      "smaller"
+     ],
+     "ratio": 1.18
+    },
+    {
+     "name": "Master Bedroom",
+     "role": "master",
+     "ok": false,
+     "bed": 1.8,
+     "access": "one",
+     "wardrobe": false,
+     "issues": [
+      "access",
+      "wardrobe"
+     ],
+     "ratio": 0.72
+    }
+   ]
+  },
+  {
+   "label": "C",
+   "ok": false,
+   "bedrooms": [
+    {
+     "name": "Bedroom",
+     "role": "secondary",
+     "ok": false,
+     "bed": 1.2,
+     "access": "both",
+     "wardrobe": true,
+     "issues": [
+      "area"
+     ],
+     "ratio": 2.05
+    },
+    {
+     "name": "Master Bedroom",
+     "role": "master",
+     "ok": false,
+     "bed": 1.8,
+     "access": "one",
+     "wardrobe": true,
+     "issues": [
+      "access"
+     ],
+     "ratio": 0.94
+    }
+   ]
+  },
+  {
+   "label": "D",
+   "ok": false,
+   "bedrooms": [
+    {
+     "name": "Bedroom",
+     "role": "secondary",
+     "ok": false,
+     "bed": 1.2,
+     "access": "both",
+     "wardrobe": true,
+     "issues": [
+      "area"
+     ],
+     "ratio": 1.82
+    },
+    {
+     "name": "Master Bedroom",
+     "role": "master",
+     "ok": true,
+     "bed": 1.8,
+     "access": "both",
+     "wardrobe": true,
+     "issues": [],
+     "ratio": 0.89
+    }
+   ]
+  },
+  {
+   "label": "E",
+   "ok": false,
+   "bedrooms": [
+    {
+     "name": "Bedroom",
+     "role": "secondary",
+     "ok": false,
+     "bed": 1.2,
+     "access": "both",
+     "wardrobe": true,
+     "issues": [
+      "area"
+     ],
+     "ratio": 2
+    },
+    {
+     "name": "Master Bedroom",
+     "role": "master",
+     "ok": false,
+     "bed": null,
+     "access": null,
+     "wardrobe": false,
+     "issues": [
+      "area",
+      "bed"
+     ],
+     "ratio": 0.63
+    }
+   ]
+  },
+  {
+   "label": "F",
+   "ok": false,
+   "bedrooms": [
+    {
+     "name": "Bedroom",
+     "role": "secondary",
+     "ok": true,
+     "bed": 1.2,
+     "access": "both",
+     "wardrobe": true,
+     "issues": [],
+     "ratio": 1.41
+    },
+    {
+     "name": "Master Bedroom",
+     "role": "master",
+     "ok": false,
+     "bed": 1.8,
+     "access": "both",
+     "wardrobe": true,
+     "issues": [
+      "area"
+     ],
+     "ratio": 1.92
+    }
+   ]
+  }
+ ]
+}
